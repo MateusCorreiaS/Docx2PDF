@@ -16,7 +16,7 @@ public class FormPrincipal : Form
 {
     private Button btnSelecionarPasta;
     private Button btnConverter;
-    private Label  lblPasta;
+    private Label lblPasta;
     private ListBox listArquivos;
     private ProgressBar progressBar;
     private Label lblStatus;
@@ -24,70 +24,86 @@ public class FormPrincipal : Form
 
     public FormPrincipal()
     {
-        Text            = "Conversor DOCX → PDF";
-        Width           = 600;
-        Height          = 480;
-        StartPosition   = FormStartPosition.CenterScreen;
+        Text = "Conversor DOCX → PDF";
+        Width = 600;
+        Height = 480;
+        StartPosition = FormStartPosition.CenterScreen;
         FormBorderStyle = FormBorderStyle.FixedSingle;
-        MaximizeBox     = false;
+        MaximizeBox = false;
 
-        lblPasta = new Label {
-            Text     = "Nenhuma pasta selecionada",
-            Left     = 20, 
-            Top      = 20,
-            Width    = 450,
+        lblPasta = new Label
+        {
+            Text = "Nenhuma pasta selecionada",
+            Left = 20,
+            Top = 20,
+            Width = 450,
             AutoSize = false
         };
 
-        btnSelecionarPasta = new Button {
-            Text   = "Selecionar Pasta",
-            Left   = 20, Top  = 50,
-            Width  = 150, Height = 35
+        btnSelecionarPasta = new Button
+        {
+            Text = "Selecionar Pasta",
+            Left = 20,
+            Top = 50,
+            Width = 150,
+            Height = 35
         };
         btnSelecionarPasta.Click += SelecionarPasta!;
 
-        listArquivos = new ListBox {
-            Left   = 20,  Top    = 100,
-            Width  = 540, Height = 230
+        listArquivos = new ListBox
+        {
+            Left = 20,
+            Top = 100,
+            Width = 540,
+            Height = 230
         };
 
-        progressBar = new ProgressBar {
-            Left  = 20,  Top   = 345,
-            Width = 540, Height = 25
+        progressBar = new ProgressBar
+        {
+            Left = 20,
+            Top = 345,
+            Width = 540,
+            Height = 25
         };
 
-        lblStatus = new Label {
-            Text     = "",
-            Left     = 20, Top = 375,
-            Width    = 540,
+        lblStatus = new Label
+        {
+            Text = "",
+            Left = 20,
+            Top = 375,
+            Width = 540,
             AutoSize = false
         };
 
-        btnConverter = new Button {
-            Text    = "Converter para PDF",
-            Left    = 20,  Top    = 400,
-            Width   = 175, Height = 35,
+        btnConverter = new Button
+        {
+            Text = "Converter para PDF",
+            Left = 20,
+            Top = 400,
+            Width = 175,
+            Height = 35,
             Enabled = false
         };
         btnConverter.Click += Converter!;
 
-        Controls.AddRange(new Control[] {
+        Controls.AddRange(
             lblPasta, btnSelecionarPasta,
             listArquivos, progressBar,
             lblStatus, btnConverter
-        });
+        );
     }
 
     private void SelecionarPasta(object sender, EventArgs e)
     {
-        using var dialog = new FolderBrowserDialog {
+        using var dialog = new FolderBrowserDialog
+        {
             Description = "Selecione a pasta com arquivos .docx"
         };
 
         if (dialog.ShowDialog() == DialogResult.OK)
         {
             pastaSelecionada = dialog.SelectedPath;
-            lblPasta.Text    = pastaSelecionada;
+            lblPasta.Text = pastaSelecionada;
             listArquivos.Items.Clear();
 
             var arquivos = Directory.GetFiles(pastaSelecionada, "*.docx");
@@ -95,7 +111,7 @@ public class FormPrincipal : Form
                 listArquivos.Items.Add(Path.GetFileName(a));
 
             btnConverter.Enabled = arquivos.Length > 0;
-            lblStatus.Text       = $"{arquivos.Length} arquivo(s) encontrado(s)";
+            lblStatus.Text = $"{arquivos.Length} arquivo(s) encontrado(s)";
         }
     }
 
@@ -114,15 +130,15 @@ public class FormPrincipal : Form
         string pastaSaida = Path.Combine(pastaSelecionada, "pdfs");
         Directory.CreateDirectory(pastaSaida);
 
-        var arquivos                = Directory.GetFiles(pastaSelecionada, "*.docx");
-        progressBar.Maximum         = arquivos.Length;
-        progressBar.Value           = 0;
-        btnConverter.Enabled        = false;
-        btnSelecionarPasta.Enabled  = false;
+        var arquivos = Directory.GetFiles(pastaSelecionada, "*.docx");
+        progressBar.Maximum = arquivos.Length;
+        progressBar.Value = 0;
+        btnConverter.Enabled = false;
+        btnSelecionarPasta.Enabled = false;
 
         int sucesso = 0, falha = 0;
 
-        await System.Threading.Tasks.Task.Run(() =>
+        await Task.Run(() =>
         {
             foreach (var arquivo in arquivos)
             {
@@ -132,10 +148,10 @@ public class FormPrincipal : Form
                 {
                     StartInfo = new ProcessStartInfo
                     {
-                        FileName        = libreOffice,
-                        Arguments       = $"--headless --convert-to pdf --outdir \"{pastaSaida}\" \"{arquivo}\"",
+                        FileName = libreOffice,
+                        Arguments = $"--headless --convert-to pdf --outdir \"{pastaSaida}\" \"{arquivo}\"",
                         UseShellExecute = false,
-                        CreateNoWindow  = true
+                        CreateNoWindow = true
                     }
                 };
 
@@ -152,9 +168,9 @@ public class FormPrincipal : Form
             }
         });
 
-        btnConverter.Enabled       = true;
+        btnConverter.Enabled = true;
         btnSelecionarPasta.Enabled = true;
-        lblStatus.Text             = $"✅ {sucesso} convertido(s)  ❌ {falha} falha(s)";
+        lblStatus.Text = $"✅ {sucesso} convertido(s)  ❌ {falha} falha(s)";
 
         MessageBox.Show(
             $"Concluído!\n\n{sucesso} PDF(s) salvos em:\n{pastaSaida}",
