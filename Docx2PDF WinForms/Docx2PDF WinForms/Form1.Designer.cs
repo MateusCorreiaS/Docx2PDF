@@ -44,6 +44,7 @@
             btnSelecionarPasta.TabIndex = 0;
             btnSelecionarPasta.Text = "Selecionar Pasta";
             btnSelecionarPasta.UseVisualStyleBackColor = true;
+            btnSelecionarPasta.Click += SelecionarPasta;
             // 
             // lblPasta
             // 
@@ -84,6 +85,7 @@
             btnConverter.TabIndex = 5;
             btnConverter.Text = "Converter para PDF";
             btnConverter.UseVisualStyleBackColor = true;
+            btnConverter.Click += Converter;
             // 
             // FormPrincipal
             // 
