@@ -9,20 +9,6 @@ namespace Docx2PDF_WinForms
             InitializeComponent();
         }
 
-        private void FormPrincipal_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblStatus_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listArquivos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
         private void SelecionarPasta(object sender, EventArgs e)
         {
             using var dialog = new FolderBrowserDialog

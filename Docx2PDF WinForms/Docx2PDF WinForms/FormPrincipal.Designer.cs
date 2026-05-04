@@ -5,20 +5,20 @@
         /// <summary>
         ///  Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        //private System.ComponentModel.IContainer components = null;
 
         /// <summary>
         ///  Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing && (components != null))
+        //    {
+        //        components.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
 
         #region Windows Form Designer generated code
 
@@ -61,7 +61,6 @@
             listArquivos.Name = "listArquivos";
             listArquivos.Size = new Size(540, 229);
             listArquivos.TabIndex = 2;
-            listArquivos.SelectedIndexChanged += listArquivos_SelectedIndexChanged;
             // 
             // progressBar
             // 
@@ -103,7 +102,6 @@
             Name = "FormPrincipal";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Conversor DOCX → PDF";
-            Load += FormPrincipal_Load;
             ResumeLayout(false);
         }
 
